@@ -1,0 +1,33 @@
+# Core FastAPI and async support
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+motor==3.3.2
+pymongo==4.6.0
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+cryptography==41.0.4
+
+# Image processing (lightweight)
+opencv-python-headless==4.8.1.78
+Pillow==10.0.1
+numpy==1.25.2
+
+# Environment & Configuration
+python-dotenv==1.0.0
+pydantic[email]==2.4.2
+
+# CORS
+fastapi-cors==0.0.6
+
+# Optional AI (commented out for lightweight deployment)
+# torch==2.0.1+cpu
+# torchvision==0.15.2+cpu
+# ultralytics==8.0.196
+
+# Production server
+gunicorn==21.2.0
