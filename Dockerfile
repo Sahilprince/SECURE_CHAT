@@ -2,7 +2,7 @@ FROM python:3.11-slim-bookworm
 
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies for AI libraries
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -13,14 +13,20 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy and install Python dependencies
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
+# Copy application code
 COPY main.py main.py
 
+# Copy startup script and make it executable
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Expose port
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:${PORT:-8000}/health || exit 1
-
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Use the startup script
+CMD ["/app/start.sh"]
