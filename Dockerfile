@@ -2,7 +2,7 @@ FROM python:3.11-slim-bookworm
 
 WORKDIR /app
 
-# Install system dependencies for AI libraries
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -18,15 +18,12 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy application code and startup script
 COPY main.py main.py
-
-# Copy startup script and make it executable
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
-# Expose port
 EXPOSE 8000
 
-# Use the startup script
-CMD ["/app/start.sh"]
+# ✅ Run through bash to expand $PORT
+CMD ["bash", "-c", "/app/start.sh"]
